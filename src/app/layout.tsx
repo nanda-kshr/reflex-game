@@ -1,16 +1,9 @@
 import type { Metadata } from 'next';
-import { Press_Start_2P } from 'next/font/google';
 import './globals.css';
 
-const pressStart2P = Press_Start_2P({
-  weight: '400',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  title: "Color Reaction Game",
-  description: "Test your reaction time with colors!",
+  title: 'Arcade Reaction Master',
+  description: 'Test your reflexes in this arcade-style reaction game',
 };
 
 export default function RootLayout({
@@ -19,8 +12,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={pressStart2P.className}>
-      <body>{children}</body>
+    <html lang="en">
+      <head>
+        {/* Add pixel font for better arcade look */}
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+      </head>
+      <body>
+        <div className="game-root">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

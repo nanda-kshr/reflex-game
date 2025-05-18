@@ -779,3 +779,430 @@ html, body {
     font-size: 0.9em;
   }
 }
+
+/* Add these styles for sidebar panels */
+
+/* Side panel content styling */
+.side-panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px 6px;
+  gap: 10px;
+}
+
+.side-panel-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  border-bottom: 2px solid #333;
+  margin-bottom: 8px;
+}
+
+.side-panel-title {
+  font-family: 'Press Start 2P', monospace;
+  color: #ffffff;
+  font-size: 14px;
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.side-panel-item {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #333;
+}
+
+.side-label {
+  font-family: 'Press Start 2P', monospace;
+  color: #666;
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.side-value {
+  font-family: 'Press Start 2P', monospace;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* XP bar in sidebar */
+.side-xp-bar {
+  background-color: #111;
+  height: 20px;
+  position: relative;
+  width: 100%;
+  border: 1px solid #333;
+}
+
+.side-xp-progress {
+  height: 100%;
+  transition: width 0.5s;
+}
+
+.side-xp-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  font-family: monospace;
+}
+
+/* Timer bar in sidebar */
+.side-timer-container {
+  flex-grow: 1;
+  width: 100%;
+  background-color: #111;
+  border: 1px solid #333;
+  position: relative;
+  min-height: 100px;
+  margin-top: auto;
+  margin-bottom: 20px;
+}
+
+.side-timer-bar {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background: linear-gradient(to top, #f00, #ff0);
+  transition: height 0.1s;
+}
+
+/* Decorative elements */
+.side-decor {
+  width: 80%;
+  margin: auto;
+  margin-top: auto;
+}
+
+/* Glow effects for score and other important stats */
+.glow-text-score {
+  color: #ffcc00;
+  text-shadow: 0 0 5px #ffcc00;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Cabinet side panel improvements */
+.cabinet-side {
+  width: var(--cabinet-side-width);
+  height: 90vh;
+  background-color: var(--cabinet-color);
+  border: 8px solid var(--cabinet-trim);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* Remove padding to maximize space */
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Updated media queries to keep sidebars visible longer */
+@media (max-width: 1200px) {
+  .cabinet-side {
+    width: 100px;
+  }
+  
+  .side-panel-item {
+    padding: 4px;
+  }
+  
+  .side-value {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 992px) {
+  :root {
+    --cabinet-side-width: 80px;
+  }
+  
+  .side-panel-title {
+    font-size: 12px;
+  }
+  
+  .side-label {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 768px) {
+  .arcade-cabinet-inner {
+    padding: 0;
+  }
+
+  .cabinet-side {
+    width: 70px;
+    border-width: 4px;
+  }
+  
+  .cabinet-screen {
+    flex: 1;
+    border-width: 4px;
+  }
+  
+  .side-panel-content {
+    padding: 8px 4px;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cabinet-side {
+    display: none;
+  }
+  
+  .cabinet-screen {
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}
+
+/* Add these improved styles for layout and proportions */
+
+/* Root wrapper to ensure proper sizing */
+.game-root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.arcade-cabinet-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #000;
+  background-image: 
+    radial-gradient(#333 1px, transparent 1px),
+    radial-gradient(#333 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
+
+.arcade-cabinet-inner {
+  width: 100%;
+  max-width: 1400px;
+  height: 100%;
+  max-height: 900px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Cabinet screen styling */
+.cabinet-screen {
+  flex: 3;
+  height: 90vh;
+  max-height: 840px;
+  background-color: #111;
+  border: 8px solid var(--cabinet-trim);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 
+    0 0 30px var(--screen-glow),
+    inset 0 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+}
+
+.cabinet-screen.full-width {
+  flex: 5;
+}
+
+.cabinet-screen-inner {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+/* Updated cabinet sides */
+.cabinet-side {
+  flex: 1;
+  min-width: 120px;
+  max-width: 140px;
+  height: 90vh;
+  max-height: 840px;
+  background-color: var(--cabinet-color);
+  border: 8px solid var(--cabinet-trim);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Side panel content styling */
+.side-panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 15px 10px;
+  gap: 12px;
+}
+
+.side-panel-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  border-bottom: 2px solid #333;
+  margin-bottom: 10px;
+}
+
+.side-panel-title {
+  font-family: 'Press Start 2P', monospace;
+  color: #ffffff;
+  font-size: 16px;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+.side-panel-item {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #333;
+}
+
+.side-label {
+  font-family: 'Press Start 2P', monospace;
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.side-value {
+  font-family: 'Press Start 2P', monospace;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Tutorial specific styling */
+.tutorial-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tutorial-panel {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Start game button enhancements */
+.start-game-btn {
+  transform: scale(1);
+  transition: all 0.2s ease;
+  animation: pulse 2s infinite;
+}
+
+.start-game-btn:hover {
+  transform: scale(1.05);
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 150, 255, 0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 150, 255, 0.8); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .cabinet-side {
+    min-width: 110px;
+    flex: 0.8;
+  }
+  
+  .side-panel-content {
+    padding: 12px 8px;
+    gap: 10px;
+  }
+  
+  .cabinet-screen {
+    flex: 3.5;
+  }
+}
+
+@media (max-width: 992px) {
+  .cabinet-side {
+    min-width: 100px;
+    flex: 0.7;
+  }
+  
+  .side-panel-title {
+    font-size: 14px;
+  }
+  
+  .side-label {
+    font-size: 10px;
+  }
+  
+  .side-value {
+    font-size: 12px;
+  }
+  
+  .cabinet-screen {
+    flex: 4;
+  }
+}
+
+@media (max-width: 768px) {
+  .cabinet-side {
+    min-width: 90px;
+    flex: 0.6;
+    border-width: 6px;
+  }
+  
+  .cabinet-screen {
+    border-width: 6px;
+    flex: 4.5;
+  }
+  
+  .side-panel-content {
+    padding: 10px 6px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cabinet-side {
+    display: none;
+  }
+  
+  .cabinet-screen {
+    width: 100%;
+    flex: 1;
+    border-width: 4px;
+    border-radius: 8px;
+  }
+}

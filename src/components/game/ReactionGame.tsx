@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useReactionGame } from '@/hooks/useReactionGame';
 import GameArea from './GameArea';
-import LeftSidebar from './leftSidebar';
+import LeftSidebar from './LeftSidebar';
 import RightSidebar from './RightSidebar';
 
 export default function ReactionGame() {
@@ -41,39 +41,45 @@ export default function ReactionGame() {
   }, [cleanup]);
 
   return (
-    <div className="arcade-cabinet-inner">
-      {/* Left cabinet panel with stats */}
-      <LeftSidebar
-        score={gameState.score}
-        level={gameState.level}
-        experience={gameState.experience}
-        difficulty={gameState.difficulty}
-      />
-
-      {/* Main game area - improved responsive width */}
-      <div className="cabinet-screen">
-        <div ref={gameAreaRef} className="cabinet-screen-inner game-container">
-          <GameArea
-            gameState={gameState}
-            onGameStart={startGame}
-            onResetGame={resetGame}
-            onGameClick={handleClick}
-            onAdvanceTutorial={advanceTutorial}
-            onSkipTutorial={skipTutorial}
-            onTimeout={handleTimeout}
-            showStats={false} // Don't show stats in game area
+    <div className="arcade-cabinet-wrapper">
+      <div className="arcade-cabinet-inner">
+        {/* Only show sidebars if not in tutorial mode */}
+        {!gameState.firstTime && (
+          <LeftSidebar
+            score={gameState.score}
+            level={gameState.level}
+            experience={gameState.experience}
+            difficulty={gameState.difficulty}
           />
-        </div>
-      </div>
+        )}
 
-      {/* Right cabinet panel with time information */}
-      <RightSidebar
-        lives={gameState.lives}
-        reactionTime={gameState.reactionTime}
-        bestTime={gameState.bestTime}
-        timeLimit={gameState.timeLimit}
-        activeTime={activeTime}
-      />
+        {/* Main game area - widened when in tutorial mode */}
+        <div className={`cabinet-screen ${gameState.firstTime ? 'full-width' : ''}`}>
+          <div ref={gameAreaRef} className="cabinet-screen-inner game-container">
+            <GameArea
+              gameState={gameState}
+              onGameStart={startGame}
+              onResetGame={resetGame}
+              onGameClick={handleClick}
+              onAdvanceTutorial={advanceTutorial}
+              onSkipTutorial={skipTutorial}
+              onTimeout={handleTimeout}
+              showStats={false}
+            />
+          </div>
+        </div>
+
+        {/* Only show sidebars if not in tutorial mode */}
+        {!gameState.firstTime && (
+          <RightSidebar
+            lives={gameState.lives}
+            reactionTime={gameState.reactionTime}
+            bestTime={gameState.bestTime}
+            timeLimit={gameState.timeLimit}
+            activeTime={activeTime}
+          />
+        )}
+      </div>
     </div>
   );
 }
