@@ -1,32 +1,38 @@
-export type GameColor = 'red' | 'yellow' | 'green' | 'blue';
-
 export interface GameState {
   isPlaying: boolean;
+  showTarget: boolean;
   startTime: number | null;
   reactionTime: number | null;
   bestTime: number | null;
   ghostTimes: number[];
-  showTarget: boolean;
-  error: string | null;
   tooEarly: boolean;
-  currentColor: GameColor;
-  targetColor: GameColor;
-  colorHistory: GameColor[];
+  level: number;
+  streak: number;
+  bestStreak: number;
+  lives: number;
+  score: number;
+  gameOver: boolean;
+  error: string | null;
+  targetSize: number;
+  targetSpeed: number;
+  distractions: { x: number; y: number; size: number }[];
 }
 
-export interface GameStats {
-  reactionTime: number | null;
-  bestTime: number | null;
-  ghostTimes: number[];
-  colorHistory: GameColor[];
+export interface GameStatsProps {
+  stats: {
+    reactionTime: number | null;
+    bestTime: number | null;
+    ghostTimes: number[];
+    level: number;
+    streak: number;
+    bestStreak: number;
+    score: number;
+    lives: number;
+  };
 }
 
 export interface GameAreaProps {
   gameState: GameState;
   onGameStart: () => void;
-  onGameClick: () => void;
+  onGameClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
-
-export interface GameStatsProps {
-  stats: GameStats;
-} 

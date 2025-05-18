@@ -2,30 +2,71 @@
 
 import { useEffect } from 'react';
 import { useReactionGame } from '@/hooks/useReactionGame';
-import { GameStats } from './GameStats';
-import { GameArea } from './GameArea';
+import GameStats from './GameStats';
+import GameArea from './GameArea';
 
-export const ReactionGame = () => {
-  const { gameState, startGame, handleClick, cleanup } = useReactionGame();
+export default function ReactionGame() {
+  const { 
+    gameState, 
+    startGame,
+    resetGame,
+    handleClick,
+    handleTimeout, 
+    advanceTutorial,
+    skipTutorial,
+    cleanup, 
+    gameAreaRef 
+  } = useReactionGame();
 
   useEffect(() => {
     return cleanup;
   }, [cleanup]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-indigo-900 to-purple-800 p-4">
-      <GameStats
-        stats={{
-          reactionTime: gameState.reactionTime,
-          bestTime: gameState.bestTime,
-          ghostTimes: gameState.ghostTimes,
-        }}
-      />
-      <GameArea
-        gameState={gameState}
-        onGameStart={startGame}
-        onGameClick={handleClick}
-      />
+    <div className="arcade-cabinet-inner">
+      {/* Left cabinet panel */}
+      <div className="cabinet-side cabinet-left">
+        <div className="cabinet-control"></div>
+        <div className="cabinet-decor"></div>
+        <div className="cabinet-light"></div>
+      </div>
+
+      {/* Main game area */}
+      <div className="cabinet-screen">
+        {!gameState.firstTime && (
+          <GameStats
+            stats={{
+              reactionTime: gameState.reactionTime,
+              bestTime: gameState.bestTime,
+              level: gameState.level,
+              experience: gameState.experience,
+              score: gameState.score,
+              lives: gameState.lives,
+              difficulty: gameState.difficulty,
+              timeLimit: gameState.timeLimit
+            }}
+          />
+        )}
+        
+        <div ref={gameAreaRef} className="cabinet-screen-inner">
+          <GameArea
+            gameState={gameState}
+            onGameStart={startGame}
+            onResetGame={resetGame}
+            onGameClick={handleClick}
+            onAdvanceTutorial={advanceTutorial}
+            onSkipTutorial={skipTutorial}
+            onTimeout={handleTimeout}
+          />
+        </div>
+      </div>
+
+      {/* Right cabinet panel */}
+      <div className="cabinet-side cabinet-right">
+        <div className="cabinet-control"></div>
+        <div className="cabinet-decor"></div>
+        <div className="cabinet-light"></div>
+      </div>
     </div>
   );
-}; 
+}

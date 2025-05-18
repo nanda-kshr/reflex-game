@@ -1,47 +1,631 @@
 @import "tailwindcss";
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --color-green-500: #10b981;
+  --color-yellow-500: #f59e0b;
+  --color-orange-500: #f97316;
+  --color-red-500: #ef4444;
+  --cabinet-width: 900px;
+  --cabinet-side-width: 80px;
+  --cabinet-color: #2d2d2d;
+  --cabinet-trim: #111111;
+  --screen-glow: rgba(0, 255, 255, 0.7);
 }
 
-@layer base {
-  body {
-    @apply antialiased;
-    color: rgb(var(--foreground-rgb));
-    background: linear-gradient(
-      to bottom right,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+/* ======= ARCADE CABINET LAYOUT ======= */
+
+.arcade-cabinet {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  background-image: 
+    radial-gradient(#333 1px, transparent 1px),
+    radial-gradient(#333 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  overflow: hidden;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+.arcade-cabinet::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.8) 80%);
+  pointer-events: none;
+}
+
+.arcade-cabinet-inner {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Side panels of the cabinet */
+.cabinet-side {
+  width: var(--cabinet-side-width);
+  height: 90vh;
+  background-color: var(--cabinet-color);
+  border: 8px solid var(--cabinet-trim);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.cabinet-left {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.cabinet-right {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Control and decoration elements on the side panels */
+.cabinet-control {
+  width: 50px;
+  height: 50px;
+  background-color: #cc3333;
+  border-radius: 50%;
+  border: 4px solid #222;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.cabinet-decor {
+  width: 40px;
+  height: 100px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffcc00,
+    #ffcc00 10px,
+    #ff9900 10px,
+    #ff9900 20px
+  );
+  border: 3px solid #222;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+}
+
+.cabinet-light {
+  width: 20px;
+  height: 20px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  border: 2px solid #222;
+  animation: blink 2s infinite alternate;
+}
+
+.cabinet-light::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(rgba(0, 255, 0, 0.4), transparent 70%);
+  animation: glow 2s infinite alternate;
+}
+
+/* Main screen area */
+.cabinet-screen {
+  flex: 1;
+  height: 90vh;
+  background-color: #111;
+  border: 8px solid var(--cabinet-trim);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 
+    0 0 30px var(--screen-glow),
+    inset 0 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.cabinet-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(0, 0, 0, 0.05) 50.1%,
+      rgba(0, 0, 0, 0.1) 100%
     );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.cabinet-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
+  z-index: 11;
+}
+
+.cabinet-screen-inner {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Arcade game container */
+.arcade-game-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #000033;
+}
+
+/* Game area */
+.arcade-game-area {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+/* ======= GAME STYLING ======= */
+
+.pixel-header {
+  background: linear-gradient(to right, #000066, #660066);
+  border-bottom: 4px solid;
+  border-image: linear-gradient(to right, #00ffff, #ff00ff) 1;
+  position: relative;
+}
+
+.glow-text {
+  text-shadow: 
+    0 0 5px #fff, 
+    0 0 10px #0cf, 
+    0 0 15px #0cf, 
+    0 0 20px #0cf;
+}
+
+.arcade-text {
+  font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.pixel-text {
+  font-family: 'Press Start 2P', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.arcade-panel {
+  background-color: #000033;
+  border: 2px solid #0099cc;
+  box-shadow: inset 0 0 15px rgba(0, 153, 204, 0.3);
+}
+
+.arcade-btn {
+  font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  border: 3px solid;
+  border-image: linear-gradient(to right, #00ffff, #ff00ff) 1;
+  box-shadow: 0 5px 0 #000066;
+  transform: translateY(-3px);
+  transition: all 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+
+.arcade-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #000066;
+}
+
+.arcade-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shine 2s infinite;
+}
+
+/* Game area states */
+.game-area-active {
+  background-color: #000033;
+  background-image: 
+    linear-gradient(0deg, rgba(0, 0, 50, 0.3) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(0, 0, 50, 0.3) 50%, transparent 50%);
+  background-size: 40px 40px;
+}
+
+.game-area-idle {
+  background-color: #220033;
+  background-image: 
+    linear-gradient(0deg, rgba(0, 0, 50, 0.3) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(0, 0, 50, 0.3) 50%, transparent 50%);
+  background-size: 40px 40px;
+}
+
+.game-area-error {
+  background-color: #330022;
+  background-image: 
+    linear-gradient(0deg, rgba(50, 0, 20, 0.3) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(50, 0, 20, 0.3) 50%, transparent 50%);
+  background-size: 40px 40px;
+}
+
+.game-area-over {
+  background-color: #330000;
+  background-image: 
+    linear-gradient(0deg, rgba(50, 0, 0, 0.3) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(50, 0, 0, 0.3) 50%, transparent 50%);
+  background-size: 40px 40px;
+}
+
+/* CRT scan lines and effects */
+.crt-scanlines {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  background-size: 100% 4px;
+}
+
+.crt-glow {
+  box-shadow: 
+    inset 0 0 30px rgba(0, 0, 255, 0.2),
+    inset 0 0 30px rgba(255, 0, 255, 0.2);
+}
+
+/* Target styling */
+.arcade-target {
+  position: absolute;
+  animation: target-pulse 0.8s infinite alternate;
+  filter: drop-shadow(0 0 10px #0f0);
+}
+/* Add these new styles to your globals.css file */
+
+/* Success state for game area */
+.game-area-success {
+  background-color: #003322;
+  background-image: 
+    linear-gradient(0deg, rgba(0, 50, 0, 0.3) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(0, 50, 0, 0.3) 50%, transparent 50%);
+  background-size: 40px 40px;
+}
+
+/* Game over popup styling */
+.arcade-gameover {
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+  animation: pulse-border 1.5s infinite alternate;
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); }
+  100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.8), 0 0 50px rgba(255, 0, 255, 0.4); }
+}
+
+/* Target animation enhanced */
+@keyframes target-pulse {
+  0% { 
+    transform: translate(-50%, -50%) scale(1); 
+    filter: hue-rotate(0deg); 
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    filter: hue-rotate(30deg);
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1); 
+    filter: hue-rotate(0deg);
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.target-outer, .target-middle, .target-inner, .target-bullseye {
+  transition: all 0.1s ease-out;
+}
+
+.arcade-target:active .target-outer {
+  background-color: #f00;
+}
+
+.arcade-target:active .target-middle {
+  background-color: #ff0;
+}
+
+.arcade-target:active .target-inner {
+  background-color: #0f0;
+}
+
+.arcade-target:active .target-bullseye {
+  background-color: #fff;
+  transform: scale(1.2);
+}
+
+.target-outer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #600;
+  clip-path: polygon(
+    0% 20%, 0% 80%, 20% 100%, 80% 100%, 100% 80%, 100% 20%, 80% 0%, 20% 0%
+  );
+}
+
+.target-middle {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  background-color: #660;
+  clip-path: polygon(
+    0% 20%, 0% 80%, 20% 100%, 80% 100%, 100% 80%, 100% 20%, 80% 0%, 20% 0%
+  );
+}
+
+.target-inner {
+  position: absolute;
+  top: 35%;
+  left: 35%;
+  width: 30%;
+  height: 30%;
+  background-color: #060;
+  clip-path: polygon(
+    0% 20%, 0% 80%, 20% 100%, 80% 100%, 100% 80%, 100% 20%, 80% 0%, 20% 0%
+  );
+}
+
+.target-bullseye {
+  position: absolute;
+  top: 42.5%;
+  left: 42.5%;
+  width: 15%;
+  height: 15%;
+  background-color: #fff;
+  clip-path: polygon(
+    0% 0%, 0% 100%, 100% 100%, 100% 0%
+  );
+}
+
+.arcade-spinner {
+  animation: arcade-spin 1s linear infinite;
+  box-shadow: 0 0 5px currentColor;
+}
+
+.arcade-gameover {
+  animation: zoom-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Animations */
+@keyframes blink {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+@keyframes glow {
+  0% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 0.8; transform: scale(1.2); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20%, 100% { left: 100%; }
+}
+
+@keyframes target-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.95); filter: hue-rotate(0deg); }
+  100% { transform: translate(-50%, -50%) scale(1.05); filter: hue-rotate(20deg); }
+}
+
+@keyframes arcade-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes zoom-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes animate-glitch {
+  0% { 
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-10px, 10px);
+  }
+  20% { 
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(10px, -10px);
+  }
+  40% { 
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-10px, 10px);
+  }
+  60% { 
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(10px, -10px);
+  }
+  80% { 
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-10px, 10px);
+  }
+  100% { 
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(10px, -10px);
   }
 }
 
-/* Custom animations */
-@keyframes ghostAppear {
-  0% { opacity: 0; transform: scale(0.8); }
-  20% { opacity: 0.7; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.2); }
+.animate-glitch {
+  position: relative;
+  animation: flicker 3s infinite alternate;
 }
 
-@keyframes ghostHit {
-  0% { opacity: 0; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.5); }
+.animate-glitch::before,
+.animate-glitch::after {
+  content: 'GAME OVER';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.animate-ghost-appear {
-  animation: ghostAppear 2s ease-out;
+.animate-glitch::before {
+  color: #0ff;
+  animation: animate-glitch 3s infinite linear alternate-reverse;
+  left: -2px;
 }
 
-.animate-ghost-hit {
-  animation: ghostHit 0.8s ease-out forwards;
+.animate-glitch::after {
+  color: #f0f;
+  animation: animate-glitch 2s infinite linear alternate;
+  left: 2px;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .cabinet-side {
+    display: none;
+  }
+  
+  .cabinet-screen {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+  }
+}
+/* Add these styles for timeout visuals */
+
+@keyframes flash {
+  0%, 50% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.flash-animation {
+  animation: flash 1s linear;
+}
+
+/* Enhance timer bar */
+.h-3 {
+  height: 0.75rem;
+}
+
+/* Make the timer more visible */
+.duration-100 {
+  transition-duration: 100ms;
+}
+
+/* Enhanced timeout styling */
+.text-red-400 {
+  color: rgb(248, 113, 113);
+  text-shadow: 0 0 5px rgba(248, 113, 113, 0.8);
+}
+
+.text-red-300 {
+  color: rgb(252, 165, 165);
+  text-shadow: 0 0 5px rgba(252, 165, 165, 0.8);
+}
+
+/* Add these styles for level up notification */
+
+.level-up-notification {
+  animation: levelUpPulse 2s ease-in-out;
+  box-shadow: 0 0 40px rgba(255, 255, 0, 0.7);
+}
+
+@keyframes levelUpPulse {
+  0% { transform: scale(0.8); opacity: 0; }
+  20% { transform: scale(1.2); opacity: 1; }
+  80% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+
+/* Enhanced target animations */
+.arcade-target {
+  position: absolute;
+  animation: target-pulse 0.8s infinite alternate;
+  filter: drop-shadow(0 0 10px #0f0);
+  transition: transform 0.1s;
+}
+
+.arcade-target:active {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+/* Sound effect visual indicator */
+.sound-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  animation: sound-wave 1s ease-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes sound-wave {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+    border-width: 4px;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+    border-width: 1px;
+  }
+}
