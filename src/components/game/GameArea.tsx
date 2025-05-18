@@ -317,7 +317,7 @@ const GameArea = ({
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-black bg-opacity-70 p-6 rounded flex flex-col items-center">
               <AlertTriangle className="text-red-400 mb-3 animate-pulse" size={48} />
-              <div className="text-red-400 font-mono text-2xl">TIME'S UP!</div>
+              <div className="text-red-400 font-mono text-2xl">TIME&apos;S UP!</div>
               <div className="text-red-300 font-mono mt-2">Life Lost!</div>
             </div>
           </div>
