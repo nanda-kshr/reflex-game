@@ -57,7 +57,7 @@ const GameArea = ({
     if (!lastTargetHit || !gameAreaRef.current) return;
     
     const colors = ['#ff4d4d', '#ffff4d', '#4dff4d', '#4dffff', '#4d4dff', '#ff4dff'];
-    const newParticles = [];
+    const newParticles: { id: number; x: number; y: number; color: string; }[] = [];
     
     for (let i = 0; i < 15; i++) {
       newParticles.push({
