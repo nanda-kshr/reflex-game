@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useReactionGame } from '@/hooks/useReactionGame';
-import GameStats from './GameStats';
 import GameArea from './GameArea';
+import LeftSidebar from './leftSidebar';
+import RightSidebar from './RightSidebar';
 
 export default function ReactionGame() {
   const { 
@@ -17,6 +18,23 @@ export default function ReactionGame() {
     cleanup, 
     gameAreaRef 
   } = useReactionGame();
+  
+  const [activeTime, setActiveTime] = useState<number | undefined>(undefined);
+  
+  // Update active time
+  useEffect(() => {
+    if (gameState.showTarget) {
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - (gameState.startTime || Date.now());
+        const timeLeft = Math.max(0, gameState.timeLimit - elapsed);
+        setActiveTime(timeLeft);
+      }, 100);
+      
+      return () => clearInterval(interval);
+    } else {
+      setActiveTime(undefined);
+    }
+  }, [gameState.showTarget, gameState.startTime, gameState.timeLimit]);
 
   useEffect(() => {
     return cleanup;
@@ -24,30 +42,16 @@ export default function ReactionGame() {
 
   return (
     <div className="arcade-cabinet-inner">
-      {/* Left cabinet panel */}
-      <div className="cabinet-side cabinet-left">
-        <div className="cabinet-control"></div>
-        <div className="cabinet-decor"></div>
-        <div className="cabinet-light"></div>
-      </div>
+      {/* Left cabinet panel with stats */}
+      <LeftSidebar
+        score={gameState.score}
+        level={gameState.level}
+        experience={gameState.experience}
+        difficulty={gameState.difficulty}
+      />
 
       {/* Main game area - improved responsive width */}
       <div className="cabinet-screen">
-        {!gameState.firstTime && (
-          <GameStats
-            stats={{
-              reactionTime: gameState.reactionTime,
-              bestTime: gameState.bestTime,
-              level: gameState.level,
-              experience: gameState.experience,
-              score: gameState.score,
-              lives: gameState.lives,
-              difficulty: gameState.difficulty,
-              timeLimit: gameState.timeLimit
-            }}
-          />
-        )}
-        
         <div ref={gameAreaRef} className="cabinet-screen-inner game-container">
           <GameArea
             gameState={gameState}
@@ -57,16 +61,19 @@ export default function ReactionGame() {
             onAdvanceTutorial={advanceTutorial}
             onSkipTutorial={skipTutorial}
             onTimeout={handleTimeout}
+            showStats={false} // Don't show stats in game area
           />
         </div>
       </div>
 
-      {/* Right cabinet panel */}
-      <div className="cabinet-side cabinet-right">
-        <div className="cabinet-control"></div>
-        <div className="cabinet-decor"></div>
-        <div className="cabinet-light"></div>
-      </div>
+      {/* Right cabinet panel with time information */}
+      <RightSidebar
+        lives={gameState.lives}
+        reactionTime={gameState.reactionTime}
+        bestTime={gameState.bestTime}
+        timeLimit={gameState.timeLimit}
+        activeTime={activeTime}
+      />
     </div>
   );
 }
