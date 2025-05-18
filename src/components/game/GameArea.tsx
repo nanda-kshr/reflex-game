@@ -255,7 +255,7 @@ const GameArea = ({
       {/* Game area - fixed height to ensure visibility */}
       <div
         ref={gameAreaRef}
-        className={`relative h-64 sm:h-80 md:h-96 cursor-pointer transition-colors duration-300 arcade-game-area ${
+        className={`relative h-64 sm:h-180 md:h-196 cursor-pointer transition-colors duration-300 arcade-game-area ${
           showTarget 
             ? "game-area-active" 
             : lastTargetHit 
