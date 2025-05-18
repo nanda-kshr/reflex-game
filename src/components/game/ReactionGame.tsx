@@ -31,7 +31,7 @@ export default function ReactionGame() {
         <div className="cabinet-light"></div>
       </div>
 
-      {/* Main game area */}
+      {/* Main game area - improved responsive width */}
       <div className="cabinet-screen">
         {!gameState.firstTime && (
           <GameStats
@@ -48,7 +48,7 @@ export default function ReactionGame() {
           />
         )}
         
-        <div ref={gameAreaRef} className="cabinet-screen-inner">
+        <div ref={gameAreaRef} className="cabinet-screen-inner game-container">
           <GameArea
             gameState={gameState}
             onGameStart={startGame}
